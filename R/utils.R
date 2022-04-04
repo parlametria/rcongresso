@@ -122,7 +122,6 @@ if (getRversion() >= "2.15.1")  utils::globalVariables(".")
 
   resp <- .get_from_api_with_exponential_backoff_cached(.SENADO_API_LINK, path, query)
   obtained_data <- .get_json(resp)
-
   if(!is.data.frame(obtained_data) && !asList){
     obtained_data %>%
       .get_dataframe()

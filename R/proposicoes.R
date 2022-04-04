@@ -800,9 +800,8 @@ fetch_autores <-
 #' @export
 .fetch_autores_senado <- function(proposicao_id) {
   autor_data <-
-    .senado_api(paste0(.SENADO_PROPOSICAO_PATH, proposicao_id),
-                asList = TRUE)$DetalheMateria$Materia
-  
+    .senado_api(paste0(.SENADO_PROPOSICAO_PATH, 'autoria/', proposicao_id),
+                asList = TRUE)$AutoriaMateria$Materia
   if ("Autoria" %in% names(autor_data)) {
     autor_data <- autor_data$Autoria$Autor
     
