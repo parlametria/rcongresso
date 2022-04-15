@@ -90,7 +90,7 @@ fetch_agenda_senado <- function(initial_date) {
 #' }
 .get_data_frame_agenda_senado <- function(initial_date, end_date) {
   url <-
-    paste0(.AGENDA_SENADO_COMISSOES, gsub('-','', initial_date), "/", gsub('-','', end_date))
+    paste0(.AGENDA_SENADO_COMISSOES, 'mes/', gsub('([0-9]{4})-([0-9]{2})-[0-9]{2}','\\1\\2', initial_date))
   json_proposicao <- .senado_api(url, asList = T)
 
   agenda_senado <- json_proposicao$AgendaReuniao$reunioes$reuniao
@@ -194,8 +194,7 @@ fetch_agenda_senado_comissoes <- function(initial_date, end_date) {
 #' @return char
 .get_id_proposicao_agenda_senado_comissoes <- function(lista_com_id){
   id <- ""
-
-  if("Deliberativa" %in% (lista_com_id %>% dplyr::pull(descricaoTipo))) {
+  if("Deliberativa" %in% (lista_com_id$descricaoTipo)) {
         if (!is.null(lista_com_id$itens.item)) {
           id <- purrr::map_chr(lista_com_id$itens.item, ~ paste(.$doma.codigoMateria, collapse = ","))
         } else {
@@ -216,7 +215,7 @@ fetch_agenda_senado_comissoes <- function(initial_date, end_date) {
 #' @return char
 .get_nome_proposicao_agenda_senado_comissoes <- function(lista_com_nome){
   nome <- ""
-  if("Deliberativa" %in% (lista_com_nome %>% dplyr::pull(descricaoTipo))) {
+  if("Deliberativa" %in% (lista_com_nome$descricaoTipo)) {
         if (!is.null(lista_com_nome$itens.item)) {
           nome <- purrr::map_chr(lista_com_nome$itens.item, ~ paste(.$nome, collapse = ","))
         } else {
